@@ -9,6 +9,7 @@ interface Certification {
   badgeCode: string;
   status: string;
   desc: string;
+  url: string;
 }
 
 export default function Certifications() {
@@ -20,42 +21,48 @@ export default function Certifications() {
       issuer: "eLearnSecurity / INE",
       badgeCode: "ID: eWPT-79401",
       status: "VERIFIED",
-      desc: "Validates practical hands-on penetration testing skills against web applications, SQLi exploitation, XSS, and authorization bypasses."
+      desc: "Validates practical hands-on penetration testing skills against web applications, SQLi exploitation, XSS, and authorization bypasses.",
+      url: "https://verify.sturtles.in"
     },
     {
       title: "Network Security Fundamentals",
       issuer: "Palo Alto Networks",
       badgeCode: "PCCET Track",
       status: "ACTIVE",
-      desc: "Covers key concepts of routing, switching, packet monitoring, firewall architecture, and prevention rules."
+      desc: "Covers key concepts of routing, switching, packet monitoring, firewall architecture, and prevention rules.",
+      url: "https://paloaltonetworksacademy.net/mod/customcert/verify_certificate.php"
     },
     {
       title: "Cybersecurity Foundation",
       issuer: "Palo Alto Networks",
       badgeCode: "Foundation Track",
       status: "ACTIVE",
-      desc: "Demonstrates core knowledge of data security, endpoint protection strategies, cloud visibility, and threat hunting workflows."
+      desc: "Demonstrates core knowledge of data security, endpoint protection strategies, cloud visibility, and threat hunting workflows.",
+      url: "https://paloaltonetworksacademy.net/mod/customcert/verify_certificate.php"
     },
     {
       title: "Oracle Cloud Infrastructure 2025 Networking Professional",
       issuer: "Oracle University",
       badgeCode: "OCI-NP-2025",
       status: "ACTIVE",
-      desc: "Validates advanced networking capabilities including VCN design, routing policies, fast connect, and secure load balancer deployments."
+      desc: "Validates advanced networking capabilities including VCN design, routing policies, fast connect, and secure load balancer deployments.",
+      url: "https://certview.oracle.com"
     },
     {
       title: "Cryptography and Network Security",
       issuer: "NPTEL / IIT",
       badgeCode: "Score: Elite",
       status: "COMPLETED",
-      desc: "Academic certification analyzing mathematical models of encryption (AES, RSA, ECC), message integrity, and PKI setups."
+      desc: "Academic certification analyzing mathematical models of encryption (AES, RSA, ECC), message integrity, and PKI setups.",
+      url: "https://swayam.gov.in"
     },
     {
       title: "CCEP",
       issuer: "RedTeam Leaders",
       badgeCode: "RTL-CCEP-2024",
       status: "VERIFIED",
-      desc: "Offensive-focused credential specializing in endpoint penetration tactics, scripting automation, and vulnerability assessment models."
+      desc: "Offensive-focused credential specializing in endpoint penetration tactics, scripting automation, and vulnerability assessment models.",
+      url: "https://redteamleaders.com"
     }
   ];
 
@@ -85,7 +92,12 @@ export default function Certifications() {
         <div className="max-w-3xl mx-auto relative px-12">
           
           {/* Active slide card display */}
-          <div className="bg-neutral-950/40 border border-neutral-900 rounded-xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 group hover:border-[#ff5353]/25 transition-all duration-300 relative shadow-2xl overflow-hidden min-h-[220px]">
+          <a
+            href={certs[activeIndex].url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block bg-neutral-950/40 border border-neutral-900 rounded-xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 group hover:border-[#ff5353]/25 hover:bg-neutral-900/10 cursor-pointer transition-all duration-300 relative shadow-2xl overflow-hidden min-h-[220px]"
+          >
             {/* Glowing slide highlights */}
             <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-[#ff5353]/20 group-hover:border-[#ff5353]/60 transition-colors" />
             <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-[#ff5353]/20 group-hover:border-[#ff5353]/60 transition-colors" />
@@ -120,7 +132,7 @@ export default function Certifications() {
                 <span>VERIFICATION: <span className="text-neutral-300 font-semibold">{certs[activeIndex].badgeCode}</span></span>
               </div>
             </div>
-          </div>
+          </a>
 
           {/* Carousel Arrows */}
           <button

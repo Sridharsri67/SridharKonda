@@ -33,7 +33,7 @@ export default function Hero() {
           <div className="h-[2px] w-24 bg-[#ff5353] my-1" />
           
           <p className="font-sans text-neutral-400 text-sm sm:text-base leading-relaxed max-w-2xl">
-            Dedicated to protecting digital frontiers and optimizing threat detection pipelines. Experienced in SIEM operations (Splunk), threat intelligence, and secure systems monitoring.
+            Dedicated to protecting digital frontiers and optimizing threat detection. Experienced in SIEM operations (Splunk), threat intelligence, and secure systems monitoring.
           </p>
           
           {/* PromptWars Global Rank Achievement Card */}
