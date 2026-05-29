@@ -192,15 +192,15 @@ query_virustotal() {
       {/* Details modal popup */}
       <AnimatePresence>
         {selectedProject && (
-          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-6 md:p-12">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="w-full max-w-3xl max-h-[85vh] bg-black border border-[#ff5353]/30 rounded shadow-[0_0_50px_rgba(255,83,83,0.08)] flex flex-col overflow-hidden"
+              className="w-full max-w-3xl max-h-[76vh] bg-[#07070f]/95 backdrop-blur-xl border border-[#ff5353]/25 rounded-2xl shadow-[0_0_50px_rgba(255,83,83,0.12)] flex flex-col overflow-hidden"
             >
               {/* Modal header */}
-              <div className="bg-neutral-950 px-5 py-4 border-b border-neutral-900 flex items-center justify-between">
+              <div className="bg-neutral-950/60 px-5 py-4 border-b border-neutral-900/80 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-5 h-5 text-[#ff5353] animate-pulse" />
                   <span className="font-sans text-xs font-bold text-neutral-400 tracking-wider">
@@ -282,7 +282,7 @@ query_virustotal() {
               </div>
 
               {/* Modal footer Actions */}
-              <div className="bg-neutral-950 px-6 py-4 border-t border-neutral-900 flex items-center justify-between">
+              <div className="bg-neutral-950/60 px-6 py-4 border-t border-neutral-900/80 flex items-center justify-between">
                 <a
                   href={selectedProject.github}
                   target="_blank"

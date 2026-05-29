@@ -26,8 +26,8 @@ export default function Hero() {
             SecOps & Cybersecurity Engineer
           </span>
           
-          <h1 className="font-sans text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
-            Konda Sridhar
+          <h1 className="font-sans text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-white leading-tight">
+  Konda Sridhar
           </h1>
           
           <div className="h-[2px] w-24 bg-[#ff5353] my-1" />

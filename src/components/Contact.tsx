@@ -121,10 +121,6 @@ export default function Contact() {
                 </div>
               </a>
             </div>
-
-            <div className="font-mono text-[8px] text-neutral-600">
-              SECURE HANDSHAKE STATUS: ENABLED (TLS_1.3)
-            </div>
           </div>
 
           {/* Form Card */}

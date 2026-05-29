@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { ShieldCheck, Award, ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useRef, useEffect } from "react";
+import { ShieldCheck, Award } from "lucide-react";
 
 interface Certification {
   title: string;
@@ -13,8 +13,6 @@ interface Certification {
 }
 
 export default function Certifications() {
-  const [activeIndex, setActiveIndex] = useState(0);
-
   const certs: Certification[] = [
     {
       title: "Certified Junior Web Application Penetration Tester",
@@ -66,13 +64,52 @@ export default function Certifications() {
     }
   ];
 
-  const handlePrev = () => {
-    setActiveIndex((prev) => (prev === 0 ? certs.length - 1 : prev - 1));
-  };
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const isInteracting = useRef(false);
+  const scrollPos = useRef(0);
+  const currentSpeed = useRef(0.85);
+  const targetSpeed = useRef(0.85);
 
-  const handleNext = () => {
-    setActiveIndex((prev) => (prev === certs.length - 1 ? 0 : prev + 1));
-  };
+  // Duplicate the list for seamless infinite horizontal scrolling
+  const displayCerts = [...certs, ...certs];
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    // Sync starting position
+    scrollPos.current = container.scrollLeft;
+
+    let animationFrameId: number;
+
+    const updateScroll = () => {
+      // Decelerate to 0 when interacting, accelerate to 0.85 when free
+      const speedGoal = isInteracting.current ? 0 : 0.85;
+      currentSpeed.current += (speedGoal - currentSpeed.current) * 0.08;
+
+      if (Math.abs(currentSpeed.current) > 0.005) {
+        scrollPos.current += currentSpeed.current;
+
+        // Find the offset where the duplicated list starts
+        const firstDupCard = container.children[certs.length] as HTMLElement;
+        if (firstDupCard) {
+          const wrapPoint = firstDupCard.offsetLeft - container.offsetLeft;
+          if (scrollPos.current >= wrapPoint) {
+            scrollPos.current -= wrapPoint;
+          }
+        }
+        container.scrollLeft = scrollPos.current;
+      }
+
+      animationFrameId = requestAnimationFrame(updateScroll);
+    };
+
+    animationFrameId = requestAnimationFrame(updateScroll);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [certs.length]);
 
   return (
     <section id="certifications" className="py-24 border-b border-neutral-900 relative">
@@ -81,89 +118,73 @@ export default function Certifications() {
       <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col mb-16">
+        <div className="flex flex-col mb-12">
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight uppercase">
             CERTIFICATIONS
           </h2>
           <div className="w-12 h-[2px] bg-[#ff5353] mt-2" />
         </div>
 
-        {/* Custom Slide Carousel */}
-        <div className="max-w-3xl mx-auto relative px-12">
-          
-          {/* Active slide card display */}
-          <a
-            href={certs[activeIndex].url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block bg-neutral-950/40 border border-neutral-900 rounded-xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 group hover:border-[#ff5353]/25 hover:bg-neutral-900/10 cursor-pointer transition-all duration-300 relative shadow-2xl overflow-hidden min-h-[220px]"
+        {/* Scrollable Container */}
+        <div className="w-full relative mt-6">
+          <div 
+            ref={scrollContainerRef}
+            onMouseEnter={() => { isInteracting.current = true; }}
+            onMouseLeave={() => { isInteracting.current = false; }}
+            onTouchStart={() => { isInteracting.current = true; }}
+            onTouchEnd={() => { isInteracting.current = false; }}
+            onScroll={() => {
+              if (isInteracting.current && scrollContainerRef.current) {
+                scrollPos.current = scrollContainerRef.current.scrollLeft;
+              }
+            }}
+            className="flex overflow-x-auto gap-6 pb-6 px-1"
           >
-            {/* Glowing slide highlights */}
-            <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-[#ff5353]/20 group-hover:border-[#ff5353]/60 transition-colors" />
-            <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-[#ff5353]/20 group-hover:border-[#ff5353]/60 transition-colors" />
+            {displayCerts.map((cert, index) => (
+              <a
+                key={`${cert.title}-${index}`}
+                href={cert.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-shrink-0 w-[290px] sm:w-[350px] md:w-[400px] bg-neutral-950/40 border border-neutral-900 rounded-xl p-5 md:p-6 flex flex-col justify-between gap-4 group hover:border-[#ff5353]/25 hover:bg-neutral-900/10 cursor-pointer transition-all duration-300 relative shadow-xl overflow-hidden"
+              >
+                {/* Glowing card highlights */}
+                <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-[#ff5353]/20 group-hover:border-[#ff5353]/60 transition-colors" />
+                <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-[#ff5353]/20 group-hover:border-[#ff5353]/60 transition-colors" />
 
-            {/* Left badge visual */}
-            <div className="p-4 rounded-xl bg-[#ff5353]/10 border border-[#ff5353]/20 flex-shrink-0 flex items-center justify-center">
-              <Award className="w-10 h-10 text-[#ff5353] animate-pulse" />
-            </div>
+                <div className="flex gap-4 items-start">
+                  {/* Left badge visual */}
+                  <div className="p-3 rounded-lg bg-[#ff5353]/10 border border-[#ff5353]/20 flex-shrink-0 flex items-center justify-center">
+                    <Award className="w-6 h-6 text-[#ff5353]" />
+                  </div>
 
-            {/* Content text */}
-            <div className="space-y-3 flex-1 text-center md:text-left">
-              <div>
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                  <span className="font-sans text-[10px] text-[#ff5353] font-bold tracking-widest">
-                    {certs[activeIndex].issuer.toUpperCase()}
-                  </span>
-                  <span className="font-sans text-[8px] bg-green-950/30 text-green-400 border border-green-500/20 px-2 py-0.5 rounded font-bold w-fit mx-auto sm:mx-0">
-                    {certs[activeIndex].status}
-                  </span>
+                  {/* Content text */}
+                  <div className="space-y-2 flex-1">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-sans text-[9px] text-[#ff5353] font-bold tracking-widest uppercase">
+                        {cert.issuer}
+                      </span>
+                      <span className="font-sans text-[8px] bg-green-950/30 text-green-400 border border-green-500/20 px-2 py-0.5 rounded font-bold">
+                        {cert.status}
+                      </span>
+                    </div>
+                    <h3 className="text-[14px] md:text-[15px] font-black text-white leading-snug group-hover:text-[#ff5353] transition-colors">
+                      {cert.title}
+                    </h3>
+                    <p className="text-neutral-400 text-[11px] leading-relaxed line-clamp-3">
+                      {cert.desc}
+                    </p>
+                  </div>
                 </div>
-                <h3 className="text-lg font-black text-white mt-1.5 leading-snug">
-                  {certs[activeIndex].title}
-                </h3>
-              </div>
 
-              <p className="text-neutral-400 text-xs leading-relaxed">
-                {certs[activeIndex].desc}
-              </p>
-
-              <div className="font-sans text-[10px] text-neutral-500 flex items-center justify-center md:justify-start gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#ff5353]" />
-                <span>VERIFICATION: <span className="text-neutral-300 font-semibold">{certs[activeIndex].badgeCode}</span></span>
-              </div>
-            </div>
-          </a>
-
-          {/* Carousel Arrows */}
-          <button
-            onClick={handlePrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 p-2 border border-neutral-800 rounded bg-neutral-950/50 text-neutral-400 hover:text-[#ff5353] hover:border-[#ff5353]/35 cursor-pointer transition-all duration-200"
-            title="Previous"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          
-          <button
-            onClick={handleNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 p-2 border border-neutral-800 rounded bg-neutral-950/50 text-neutral-400 hover:text-[#ff5353] hover:border-[#ff5353]/35 cursor-pointer transition-all duration-200"
-            title="Next"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-
-        </div>
-
-        {/* Index indicators */}
-        <div className="flex items-center justify-center gap-1.5 mt-8">
-          {certs.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setActiveIndex(idx)}
-              className={`h-1.5 rounded-full cursor-pointer transition-all duration-300
-                ${activeIndex === idx ? "w-6 bg-[#ff5353]" : "w-1.5 bg-neutral-800 hover:bg-neutral-700"}
-              `}
-            />
-          ))}
+                {/* Bottom Verification Label */}
+                <div className="font-sans text-[9px] text-neutral-500 flex items-center gap-1 border-t border-neutral-900/60 pt-3">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#ff5353]/70" />
+                  <span>VERIFICATION: <span className="text-neutral-300 font-semibold">{cert.badgeCode}</span></span>
+                </div>
+              </a>
+            ))}
+          </div>
         </div>
 
       </div>

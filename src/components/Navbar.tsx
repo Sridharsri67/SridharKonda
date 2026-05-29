@@ -91,7 +91,7 @@ export default function Navbar({ onTerminalToggle }: NavbarProps) {
             
             {/* Brand Name "SRIDHAR KONDA" */}
             <span className="font-sans text-xs sm:text-sm font-bold tracking-[0.3em] sm:tracking-[0.4em] text-white uppercase transition-colors">
-              SRIDHAR KONDA
+              KONDA SRIDHAR
             </span>
           </a>
 

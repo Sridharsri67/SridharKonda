@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Terminal, Shield, Network, Globe, Code2, Search, Cpu, FileCheck } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface SkillItem {
   name: string;
@@ -125,49 +125,45 @@ export default function Skills() {
         </div>
 
         {/* Grid Skills Display */}
-        <motion.div
-          layout
+        <div
+          key={filter}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
         >
-          <AnimatePresence mode="popLayout">
-            {filteredSkills.map((skill) => (
-              <motion.div
-                key={skill.name}
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3 }}
-                className="bg-neutral-950/20 border border-neutral-900 rounded-xl p-4 flex flex-col gap-3 group hover:border-[#ff5353]/20 hover:bg-neutral-950/40 transition-all duration-300 shadow-sm"
-              >
-                {/* Skill Title & Icon */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <div className="p-2 border border-neutral-900 rounded-lg bg-neutral-950">
-                      {getCategoryIcon(skill.category)}
-                    </div>
-                    <span className="text-neutral-300 group-hover:text-white transition-colors text-xs font-bold tracking-wider">
-                      {skill.name}
-                    </span>
+          {filteredSkills.map((skill, index) => (
+            <motion.div
+              key={skill.name}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, delay: index * 0.015, ease: "easeOut" }}
+              className="bg-neutral-950/20 border border-neutral-900 rounded-xl p-4 flex flex-col gap-3 group hover:border-[#ff5353]/20 hover:bg-neutral-950/40 transition-all duration-300 shadow-sm"
+            >
+              {/* Skill Title & Icon */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2 border border-neutral-900 rounded-lg bg-neutral-950">
+                    {getCategoryIcon(skill.category)}
                   </div>
-                  <span className="font-sans text-[10px] text-[#ff5353] font-bold bg-[#ff5353]/10 px-2.5 py-0.5 rounded-full">
-                    {skill.level}%
+                  <span className="text-neutral-300 group-hover:text-white transition-colors text-xs font-bold tracking-wider">
+                    {skill.name}
                   </span>
                 </div>
+                <span className="font-sans text-[10px] text-[#ff5353] font-bold bg-[#ff5353]/10 px-2.5 py-0.5 rounded-full">
+                  {skill.level}%
+                </span>
+              </div>
 
-                {/* Progress bar */}
-                <div className="w-full bg-neutral-950 border border-neutral-900 p-[1.5px] rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${skill.level}%` }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="h-1 bg-[#ff5353] rounded-full"
-                  />
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+              {/* Progress bar */}
+              <div className="w-full bg-neutral-950 border border-neutral-900 p-[1.5px] rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${skill.level}%` }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="h-1 bg-[#ff5353] rounded-full"
+                />
+              </div>
+            </motion.div>
+          ))}
+        </div>
 
       </div>
     </section>

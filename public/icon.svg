@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Outer Ring -->
+  <circle cx="50" cy="50" r="42" stroke="white" stroke-width="4.5" />
+  <!-- Inner Guide Circle -->
+  <circle cx="50" cy="50" r="28" stroke="white" stroke-width="1" stroke-dasharray="3 3" opacity="0.4" />
+  <!-- Hexagon vertices connecting lines -->
+  <line x1="50" y1="8" x2="80" y2="35" stroke="white" stroke-width="2.5" />
+  <line x1="80" y1="35" x2="80" y2="70" stroke="white" stroke-width="2.5" />
+  <line x1="80" y1="70" x2="50" y2="92" stroke="white" stroke-width="2.5" />
+  <line x1="50" y1="92" x2="20" y2="70" stroke="white" stroke-width="2.5" />
+  <line x1="20" y1="70" x2="20" y2="35" stroke="white" stroke-width="2.5" />
+  <line x1="20" y1="35" x2="50" y2="8" stroke="white" stroke-width="2.5" />
+</svg>
