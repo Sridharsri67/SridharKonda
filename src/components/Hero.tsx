@@ -27,7 +27,7 @@ export default function Hero() {
           </span>
           
           <h1 className="font-sans text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-white leading-tight">
-  Konda Sridhar
+            Sridhar Konda 
           </h1>
           
           <div className="h-[2px] w-24 bg-[#ff5353] my-1" />

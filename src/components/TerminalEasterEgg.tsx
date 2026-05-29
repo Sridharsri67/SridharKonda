@@ -73,7 +73,7 @@ export default function TerminalEasterEgg({ isOpen, onClose }: TerminalEasterEgg
       case "about":
         setHistory([
           ...newHistory,
-          { text: "KONDA SRIDHAR — ASPIRING SECOPS ENGINEER / SOC ANALYST" },
+          { text: "SRIDHAR KONDA — ASPIRING SECOPS ENGINEER / SOC ANALYST" },
           { text: "B.Tech Computer Science student @ Parul University (2023 - 2027)" },
           { text: "Specialized in SIEM (Splunk), security monitoring, traffic analysis," },
           { text: "OWASP Top 10 remediation, and incident response operations." }
@@ -148,7 +148,7 @@ export default function TerminalEasterEgg({ isOpen, onClose }: TerminalEasterEgg
           ...newHistory,
           { text: "🔓 DECRYPTING SYST_PAYLOAD..." },
           { text: "  HEX: 4b 4f 4e 44 41 20 53 52 49 44 48 41 52" },
-          { text: "  STRING: 'KONDA SRIDHAR'" },
+          { text: "  STRING: 'SRIDHAR KONDA'" },
           { text: "  FLAG: SOC{THe_NExt_GeN_SEcOPs_ENgINeER_2026}", isSuccess: true }
         ]);
         break;

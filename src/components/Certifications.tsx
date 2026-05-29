@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
-import { ShieldCheck, Award } from "lucide-react";
+import React, { useRef, useEffect, useState } from "react";
+import { ShieldCheck, Award, X, ExternalLink, FileImage } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Certification {
   title: string;
@@ -10,6 +11,7 @@ interface Certification {
   status: string;
   desc: string;
   url: string;
+  image: string;
 }
 
 export default function Certifications() {
@@ -20,7 +22,8 @@ export default function Certifications() {
       badgeCode: "ID: eWPT-79401",
       status: "VERIFIED",
       desc: "Validates practical hands-on penetration testing skills against web applications, SQLi exploitation, XSS, and authorization bypasses.",
-      url: "https://verify.sturtles.in"
+      url: "https://verify.sturtles.in",
+      image: "/certificates/Certificate_ECR-01500.pdf"
     },
     {
       title: "Network Security Fundamentals",
@@ -28,7 +31,8 @@ export default function Certifications() {
       badgeCode: "PCCET Track",
       status: "ACTIVE",
       desc: "Covers key concepts of routing, switching, packet monitoring, firewall architecture, and prevention rules.",
-      url: "https://paloaltonetworksacademy.net/mod/customcert/verify_certificate.php"
+      url: "https://paloaltonetworksacademy.net/mod/customcert/verify_certificate.php",
+      image: "/certificates/NS.pdf"
     },
     {
       title: "Cybersecurity Foundation",
@@ -36,7 +40,8 @@ export default function Certifications() {
       badgeCode: "Foundation Track",
       status: "ACTIVE",
       desc: "Demonstrates core knowledge of data security, endpoint protection strategies, cloud visibility, and threat hunting workflows.",
-      url: "https://paloaltonetworksacademy.net/mod/customcert/verify_certificate.php"
+      url: "https://paloaltonetworksacademy.net/mod/customcert/verify_certificate.php",
+      image: "/certificates/CS1.pdf"
     },
     {
       title: "Oracle Cloud Infrastructure 2025 Networking Professional",
@@ -44,7 +49,8 @@ export default function Certifications() {
       badgeCode: "OCI-NP-2025",
       status: "ACTIVE",
       desc: "Validates advanced networking capabilities including VCN design, routing policies, fast connect, and secure load balancer deployments.",
-      url: "https://certview.oracle.com"
+      url: "https://certview.oracle.com",
+      image: "/certificates/eCertificate.pdf"
     },
     {
       title: "Cryptography and Network Security",
@@ -52,7 +58,8 @@ export default function Certifications() {
       badgeCode: "Score: Elite",
       status: "COMPLETED",
       desc: "Academic certification analyzing mathematical models of encryption (AES, RSA, ECC), message integrity, and PKI setups.",
-      url: "https://swayam.gov.in"
+      url: "https://swayam.gov.in",
+      image: "/certificates/Cryptography and Network Security.pdf"
     },
     {
       title: "CCEP",
@@ -60,7 +67,8 @@ export default function Certifications() {
       badgeCode: "RTL-CCEP-2024",
       status: "VERIFIED",
       desc: "Offensive-focused credential specializing in endpoint penetration tactics, scripting automation, and vulnerability assessment models.",
-      url: "https://redteamleaders.com"
+      url: "https://redteamleaders.com",
+      image: "/certificates/certified_certificate.pdf"
     }
   ];
 
@@ -68,7 +76,25 @@ export default function Certifications() {
   const isInteracting = useRef(false);
   const scrollPos = useRef(0);
   const currentSpeed = useRef(0.85);
-  const targetSpeed = useRef(0.85);
+
+  const [activeCert, setActiveCert] = useState<Certification | null>(null);
+  const [imageError, setImageError] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
+
+  // Reset loading and error flags when activeCert changes
+  useEffect(() => {
+    setImageError(false);
+    setImageLoading(true);
+  }, [activeCert]);
+
+  // Pause scroll rotation when a modal is open
+  useEffect(() => {
+    if (activeCert) {
+      isInteracting.current = true;
+    } else {
+      isInteracting.current = false;
+    }
+  }, [activeCert]);
 
   // Duplicate the list for seamless infinite horizontal scrolling
   const displayCerts = [...certs, ...certs];
@@ -112,7 +138,7 @@ export default function Certifications() {
   }, [certs.length]);
 
   return (
-    <section id="certifications" className="py-24 border-b border-neutral-900 relative">
+    <section id="certifications" className="pt-24 pb-12 border-b border-neutral-900 relative">
       <div className="absolute inset-0 cyber-grid-dots opacity-10 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
@@ -130,9 +156,9 @@ export default function Certifications() {
           <div 
             ref={scrollContainerRef}
             onMouseEnter={() => { isInteracting.current = true; }}
-            onMouseLeave={() => { isInteracting.current = false; }}
+            onMouseLeave={() => { if (!activeCert) isInteracting.current = false; }}
             onTouchStart={() => { isInteracting.current = true; }}
-            onTouchEnd={() => { isInteracting.current = false; }}
+            onTouchEnd={() => { if (!activeCert) isInteracting.current = false; }}
             onScroll={() => {
               if (isInteracting.current && scrollContainerRef.current) {
                 scrollPos.current = scrollContainerRef.current.scrollLeft;
@@ -144,8 +170,10 @@ export default function Certifications() {
               <a
                 key={`${cert.title}-${index}`}
                 href={cert.url}
-                target="_blank"
-                rel="noopener noreferrer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActiveCert(cert);
+                }}
                 className="flex-shrink-0 w-[290px] sm:w-[350px] md:w-[400px] bg-neutral-950/40 border border-neutral-900 rounded-xl p-5 md:p-6 flex flex-col justify-between gap-4 group hover:border-[#ff5353]/25 hover:bg-neutral-900/10 cursor-pointer transition-all duration-300 relative shadow-xl overflow-hidden"
               >
                 {/* Glowing card highlights */}
@@ -188,6 +216,132 @@ export default function Certifications() {
         </div>
 
       </div>
+
+      {/* Modal Lightbox Overlay */}
+      <AnimatePresence>
+        {activeCert && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+            {/* Modal Backdrop click to close */}
+            <div 
+              className="absolute inset-0 cursor-pointer"
+              onClick={() => setActiveCert(null)}
+            />
+
+            {/* Modal Content Window */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.25 }}
+              className="relative w-full max-w-5xl h-auto max-h-[90vh] md:h-[650px] bg-neutral-950 border border-neutral-900 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(255,83,83,0.15)] flex flex-col md:flex-row z-10"
+            >
+              {/* Glowing decorative frame elements */}
+              <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-[#ff5353]/40 z-20" />
+              <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-[#ff5353]/40 z-20" />
+              <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-[#ff5353]/40 z-20" />
+              <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-[#ff5353]/40 z-20" />
+
+              {/* Close Button */}
+              <button
+                onClick={() => setActiveCert(null)}
+                className="absolute top-4 right-4 z-30 p-2 rounded-full bg-black/60 border border-neutral-800 hover:border-[#ff5353] text-neutral-400 hover:text-white transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              {/* Left Side: Certificate Preview Image/PDF */}
+              <div className="w-full md:w-3/5 h-1/2 md:h-full bg-neutral-900/10 flex items-center justify-center relative border-b md:border-b-0 md:border-r border-neutral-900">
+                {imageLoading && !imageError && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-neutral-950/80 z-10">
+                    <div className="w-8 h-8 border-2 border-[#ff5353] border-t-transparent rounded-full animate-spin" />
+                    <span className="font-mono text-[10px] text-neutral-500 tracking-wider">LOADING SECURE DOCUMENT...</span>
+                  </div>
+                )}
+
+                {imageError ? (
+                  <div className="p-8 text-center space-y-4 max-w-xs">
+                    <div className="w-12 h-12 rounded-full border border-neutral-900 bg-neutral-950 flex items-center justify-center mx-auto text-[#ff5353]">
+                      <FileImage className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <div className="font-sans text-xs font-bold text-white uppercase tracking-wider">PREVIEW PENDING</div>
+                      <p className="text-[10px] text-neutral-400 mt-2 leading-relaxed font-mono">
+                        Copy your certificate file to the workspace path:
+                        <br />
+                        <span className="text-[#ff5353] block mt-1 break-all select-all">public{activeCert.image}</span>
+                      </p>
+                    </div>
+                  </div>
+                ) : activeCert.image.endsWith(".pdf") ? (
+                  <iframe
+                    src={`${activeCert.image}#toolbar=0&navpanes=0&scrollbar=0`}
+                    className="w-full h-full border-none bg-neutral-950"
+                    title={activeCert.title}
+                    onLoad={() => setImageLoading(false)}
+                    onError={() => {
+                      setImageError(true);
+                      setImageLoading(false);
+                    }}
+                  />
+                ) : (
+                  <img
+                    src={activeCert.image}
+                    alt={activeCert.title}
+                    onLoad={() => setImageLoading(false)}
+                    onError={() => {
+                      setImageError(true);
+                      setImageLoading(false);
+                    }}
+                    className="w-full h-full object-contain p-4"
+                  />
+                )}
+              </div>
+
+              {/* Right Side: Verification Details */}
+              <div className="w-full md:w-2/5 h-1/2 md:h-full p-6 md:p-8 flex flex-col justify-between gap-6 bg-black/40 overflow-y-auto">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="font-sans text-[10px] text-[#ff5353] font-bold tracking-widest uppercase">
+                      {activeCert.issuer}
+                    </span>
+                    <span className="font-sans text-[8px] bg-green-950/30 text-green-400 border border-green-500/20 px-2 py-0.5 rounded font-bold">
+                      {activeCert.status}
+                    </span>
+                  </div>
+
+                  <h3 className="font-sans text-lg md:text-xl font-extrabold text-white leading-tight">
+                    {activeCert.title}
+                  </h3>
+
+                  <p className="text-neutral-400 text-xs leading-relaxed">
+                    {activeCert.desc}
+                  </p>
+                </div>
+
+                <div className="space-y-4 pt-4 border-t border-neutral-900">
+                  <div className="font-mono text-[9px] text-neutral-500 space-y-1">
+                    <div>CERTIFICATE ID / CODE:</div>
+                    <div className="text-neutral-300 font-semibold">{activeCert.badgeCode}</div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <a
+                      href={activeCert.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 py-2.5 bg-neutral-950 hover:bg-[#ff5353]/10 text-white border border-neutral-900 hover:border-[#ff5353] font-sans font-bold text-xs tracking-wider rounded-lg flex items-center justify-center gap-2 cursor-pointer transition-all duration-300"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      VERIFY CREDENTIAL
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

@@ -15,10 +15,10 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Konda Sridhar",
-  description: "Portfolio of Konda Sridhar, an aspiring SecOps Engineer and Cybersecurity Specialist. Specialized in SOC Operations, Threat Intelligence, and SIEM monitoring.",
+  title: "Sridhar Konda",
+  description: "Portfolio of Sridhar Konda, an aspiring SecOps Engineer and Cybersecurity Specialist. Specialized in SOC Operations, Threat Intelligence, and SIEM monitoring.",
   keywords: [
-    "Konda Sridhar",
+    "Sridhar Konda",
     "Cybersecurity Portfolio",
     "SecOps Engineer",
     "SOC Analyst",
@@ -27,18 +27,18 @@ export const metadata: Metadata = {
     "Splunk",
     "Penetration Testing"
   ],
-  authors: [{ name: "Konda Sridhar" }],
+  authors: [{ name: "Sridhar Konda" }],
   openGraph: {
-    title: "Konda Sridhar",
+    title: "Sridhar Konda",
     description: "Aspiring SecOps Engineer specializing in SIEM, threat detection, incident response, and security monitoring.",
     url: "https://sridharkonda.com",
-    siteName: "Konda Sridhar Portfolio",
+    siteName: "Sridhar Konda Portfolio",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Konda Sridhar SOC Dashboard Portfolio"
+        alt: "Sridhar Konda SOC Dashboard Portfolio"
       }
     ],
     locale: "en_US",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Konda Sridhar",
+    title: "Sridhar Konda",
     description: "Aspiring SecOps Engineer specializing in SIEM, threat detection, incident response, and security monitoring.",
     images: ["/og-image.png"],
   },

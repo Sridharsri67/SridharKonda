@@ -60,7 +60,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
             
             {/* Spaced brand monogram */}
             <span className="font-sans text-sm font-semibold tracking-[0.5em] text-white">
-              KONDA SRIDHAR
+              SRIDHAR KONDA 
             </span>
             
             {/* Minimalist loading bar */}

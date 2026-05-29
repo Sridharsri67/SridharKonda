@@ -1,4 +1,4 @@
-# Cybersecurity & SecOps Portfolio — Konda Sridhar
+# Cybersecurity & SecOps Portfolio — Sridhar Konda
 
 A modern, premium, fully responsive cybersecurity, threat intelligence, and SecOps Engineer portfolio website designed with a dark futuristic SOC/SecOps dashboard aesthetic.
 
